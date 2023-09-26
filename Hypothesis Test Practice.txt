@@ -1,0 +1,529 @@
+
+# One Sample Z Test example
+
+We'll examine whether the mean blood pressure of a sample of patients matches a known population mean. We want to determine if the sample's blood pressure differs significantly from the population mean.
+
+
+## Sample Data
+Suppose we have a sample of 20 patients, and we want to test if their average blood pressure is different from a population mean of 120 mm Hg. Here's the sample data:
+
+
+# Sample data for blood pressure
+blood_pressure <- c(130, 125, 135, 128, 122, 132, 127, 129, 128, 131,
+                     126, 134, 130, 133, 127, 128, 130, 132, 129, 125)
+
+```
+
+## Step 1: Calculate the Sample Mean and Standard Deviation
+First, calculate the sample mean and standard deviation of the blood pressure measurements.
+
+
+# Calculate sample mean
+sample_mean <- mean(blood_pressure)
+
+# Calculate sample standard deviation
+sample_sd <- sd(blood_pressure)
+```
+
+## Step 2: Define Population Parameters
+Next, define the population parameters, including the population mean and the hypothesized value to test against.
+
+
+# Population mean (known)
+population_mean <- 120
+
+# Hypothesized value (the value we want to test against)
+hypothesized_value <- 120
+```
+
+## Step 3: Calculate the Z-Score
+Calculate the Z-score:
+
+
+# Calculate standard error
+standard_error <- sample_sd / sqrt(length(blood_pressure))
+
+# Calculate Z-score
+z_score <- (sample_mean - population_mean) / standard_error
+```
+
+
+## Step 4: Perform the Z-Test
+Perform the one-sample Z-test using the calculated Z-score.
+
+
+
+# Calculate the Z test statistic
+z_stat <- (sample_mean - population_mean) / (sample_sd / sqrt(20))
+z_stat
+
+```
+
+# Calculate the corresponding p-value
+p_value <- 2 * (1 - pnorm(abs(z_stat)))
+
+# Display the p-value
+p_value
+```
+
+## Step 5: Interpret the Results
+Let's interpret the results of the one-sample Z-test
+
+The Z-statistic measures how many standard errors the sample mean is away from the population mean.
+
+The p-value tells us whether this difference is statistically significant. A small p-value (typically < 0.05) indicates that the sample mean is significantly different from the population mean.
+
+Since the p-value is less than 0.05, we reject the null hypothesis.
+The sample's blood pressure differs significantly from the population mean of 120 mm Hg.
+
+# Two Sample T-Test Example
+
+
+## Introduction
+
+In this example, we will perform a two-sample t-test to analyze the effectiveness of two different pain relief medications in a pharmacy setting. We want to determine if there is a significant difference in pain relief duration between the two medications: Formula A and Formula B.
+
+## Data
+
+We have collected data from 15 patients for each medication. Here are the pain relief durations (in hours) for each group:
+
+
+# Data
+formula_a <- c(4.2, 3.5, 2.9, 3.8, 4.5, 4.0, 3.7, 3.2, 4.1, 3.0, 3.9, 3.3, 4.4, 3.8, 3.7)
+formula_b <- c(3.0, 2.7, 2.2, 2.9, 3.5, 3.1, 2.8, 2.6, 3.4, 2.5, 3.1, 2.8, 3.6, 3.0, 3.2)
+```
+
+## Step 1: Descriptive Statistics
+
+Let's begin by calculating some descriptive statistics for each group.
+
+
+# Descriptive Statistics
+mean_a <- mean(formula_a)
+mean_b <- mean(formula_b)
+
+sd_a <- sd(formula_a)
+sd_b <- sd(formula_b)
+
+# Display Descriptive Statistics
+mean_a
+mean_b
+sd_a
+sd_b
+```
+
+Interpretation: The mean pain relief duration for Formula A is approximately mean_a hours, with a standard deviation of sd_a. For Formula B, the mean duration is approximately mean_b hours, with a standard deviation of sd_b.
+
+## Step 2: Visualize the Data
+
+We can create a boxplot to visualize the distribution of pain relief durations for each medication.
+
+
+# Data Visualization
+library(ggplot2)
+
+data <- data.frame(
+  Formula = c(rep("A", length(formula_a)), rep("B", length(formula_b))),
+  PainRelief = c(formula_a, formula_b)
+)
+
+ggplot(data, aes(x = Formula, y = PainRelief, fill = Formula)) +
+  geom_boxplot() +
+  labs(
+    title = "Pain Relief Duration by Formulation",
+    x = "Formulation",
+    y = "Pain Relief Duration (hours)"
+  ) +
+  theme_minimal()
+```
+
+Interpretation: The boxplot shows the distribution of pain relief durations for each medication. Formula A appears to have a slightly higher median duration compared to Formula B.
+
+## Step 3: Perform the T-Test
+
+Now, let's perform a two-sample t-test to determine if there is a significant difference in pain relief duration between the two medications.
+
+
+# Perform the t-test
+t_test_result <- t.test(formula_a, formula_b, alternative = "two.sided", var.equal = FALSE)
+
+# Display the t-test results
+t_test_result
+```
+
+
+Interpretation: The t-test results provide a test statistic (t-value) and a p-value. The p-value is t_test_result$p.value. If the p-value is less than our chosen significance level (e.g., 0.05), we can conclude whether there is a statistically significant difference in pain relief duration between the two medications.
+
+## Conclusion
+
+Based on the t-test results, we can make a conclusion about the effectiveness of the two pain relief medications. 
+
+
+
+
+
+
+
+
+# Two Sample T- test example
+
+In this example, we'll compare the effectiveness of two different medications in reducing blood pressure. We'll have two groups: Group A, which takes Medication A, and Group B, which takes Medication B. We want to determine if there is a significant difference in blood pressure reduction between the two groups.
+
+
+# Sample data for Group A (Medication A)
+group_a <- c(130, 135, 138, 142, 128, 133, 137, 131, 136, 139)
+
+# Sample data for Group B (Medication B)
+group_b <- c(128, 129, 134, 125, 133, 131, 127, 132, 136, 130)
+
+```
+## Step 1: Calculate Descriptive Statistics
+First, we need to calculate the means and standard deviations for both groups.
+
+
+# Calculate mean and standard deviation for Group A
+mean_a <- mean(group_a)
+sd_a <- sd(group_a)
+
+# Calculate mean and standard deviation for Group B
+mean_b <- mean(group_b)
+sd_b <- sd(group_b)
+```
+
+
+## Step 2: Create a Box Plot
+
+# Create a side-by-side box plot
+boxplot(group_a, group_b, 
+        names = c("Medication A", "Medication B"),
+        main = "Blood Pressure Reduction by Medication",
+        ylab = "Blood Pressure Reduction")
+
+# Add a legend
+legend("topright", legend = c("Medication A", "Medication B"), fill = c("blue", "red"))
+```
+
+
+
+## Step 3: Perform the Two-Sample T-Test
+Next, we'll perform the two-sample t-test using the t.test function in R.
+
+
+# Perform the two-sample t-test
+t_result <- t.test(group_a, group_b)
+```
+## Step 4: Interpret the Results
+Now, let's interpret the results.
+
+
+
+# Print the t-test results
+t_result
+
+```
+The output will include several values, but the key ones for our interpretation are:
+
+t statistic: The t-statistic represents the difference in means between the two groups.
+
+p-value: The p-value tells us whether the difference in means is statistically significant. A small p-value (typically < 0.05) indicates statistical significance.
+
+## Step 5: Interpretation
+In our example:
+
+The t-statistic measures the difference in blood pressure reduction between Group A (Medication A) and Group B (Medication B).
+
+Since the p-value is less than 0.05, we reject the null hypothesis we can conclude that there is a significant difference between the two medications.
+
+
+
+# Paired T- test example
+
+In this example, we'll investigate whether a new medication has a significant effect in reducing cholesterol levels in a group of patients. We will measure cholesterol levels in the same patients before and after they took the medication. We want to determine if there is a statistically significant difference in cholesterol levels before and after taking the medication.
+
+
+# Sample data for cholesterol levels before treatment
+before_treatment <- c(220, 240, 250, 230, 215, 245, 260, 235, 225, 255)
+
+# Sample data for cholesterol levels after treatment
+after_treatment <- c(195, 215, 222, 208, 189, 219, 247, 206, 213, 225)
+
+```
+
+## Step 1: Create a Plot
+Now, let's create a paired data plot (a before-and-after plot) to visualize the change in cholesterol levels.
+
+This code creates a scatter plot of cholesterol levels before and after treatment, with a reference line (red line) showing the line of no change. Points above the line indicate an increase in cholesterol levels after treatment, while points below the line indicate a decrease.
+
+
+# Create a paired data plot
+plot(before_treatment, after_treatment, 
+     xlab = "Cholesterol Levels Before Treatment (mg/dL)", 
+     ylab = "Cholesterol Levels After Treatment (mg/dL)", 
+     main = "Cholesterol Levels Before and After Treatment",
+     pch = 19, col = "blue")
+
+# Add a diagonal reference line
+abline(a = 0, b = 1, col = "red")
+
+```
+
+## Step 2: Calculate the Differences
+First, calculate the differences in cholesterol levels for each patient (before - after).
+
+
+# Calculate the differences
+differences <- after_treatment - before_treatment
+```
+
+## Step 3: Perform the Paired T-Test
+Next, perform the paired t-test using the t.test function. This test will compare the mean of the differences to zero.
+
+
+# Perform the paired t-test
+t_result <- t.test(differences)
+
+```
+
+## Step 4: Interpret the Results
+Now, let's interpret the results of the paired t-test.
+
+The t-statistic measures the mean difference in cholesterol levels before and after treatment with the new drug.
+
+Since the p-value is less than 0.05 (a common significance level), we can conclude that there is a significant difference in cholesterol levels after treatment.
+
+
+
+# One way ANOVA example
+
+In this example, we'll analyze the effectiveness of three different drug treatments in reducing pain for patients with a specific condition. We want to determine if there is a significant difference in pain reduction among the three drug treatments.
+
+
+
+## Sample Data
+Here's some sample data for pain reduction scores for patients in three different drug treatment groups (Group A, Group B, and Group C):
+
+
+# Sample data for pain reduction scores in Group A
+group_a <- c(5, 6, 7, 4, 6, 5)
+
+# Sample data for pain reduction scores in Group B
+group_b <- c(4, 3, 5, 4, 3, 4)
+
+# Sample data for pain reduction scores in Group C
+group_c <- c(7, 8, 9, 6, 8, 7)
+
+```
+
+
+## Step 1: Combine Data and Create a Data Frame
+First, combine the data from all three groups into a single data frame.
+
+
+# Combine data into a data frame
+data <- data.frame(
+  Treatment = rep(c("A", "B", "C"), each = 6),
+  PainReduction = c(group_a, group_b, group_c)
+)
+```
+
+## Step 2: Visualize the Data
+Before performing the ANOVA, it's a good practice to visualize the data. We can create a box plot to compare the distributions of pain reduction scores for each treatment group.
+
+
+# Create a box plot
+boxplot(PainReduction ~ Treatment, data = data,
+        xlab = "Treatment Group", ylab = "Pain Reduction",
+        main = "Pain Reduction by Treatment Group")
+
+```
+This code creates a box plot that visualizes the distribution of pain reduction scores for each treatment group.
+
+## Step 3: Perform One-Way ANOVA
+Now, let's perform a one-way ANOVA to test whether there are significant differences in pain reduction among the treatment groups.
+
+
+# Perform one-way ANOVA
+anova_result <- aov(PainReduction ~ Treatment, data = data)
+```
+
+## Step 4: Interpret the Results
+Let's interpret the results of the one-way ANOVA.
+
+
+# Print ANOVA results
+summary(anova_result)
+```
+The output will include several values, but the key ones for our interpretation are:
+
+Pr(>F): The p-value associated with the F-statistic. It tells us whether there is a statistically significant difference in pain reduction among the treatment groups.
+
+
+## Step 5: Interpretation
+In our example:
+
+The F-statistic measures the variation in pain reduction scores between the treatment groups relative to the variation within the groups.
+
+The p-value associated with the F-statistic tells us whether this variation is statistically significant. If the p-value is less than 0.05 (a common significance level), we can conclude that there is a significant difference in pain reduction among the treatment groups.
+
+Let's interpret the results based on the output:
+The t-statistic measures the mean difference in cholesterol levels before and after treatment with the new drug.
+
+The p-value indicates whether this mean difference is statistically significant. Since the p-value is less than 0.05 , we can conclude that there is a significant difference in cholesterol levels after treatment.
+
+
+
+# One Proportion Test example
+
+In this example, we'll analyze whether a new drug is effective in treating a specific condition by comparing the proportion of patients who experienced improvement. We want to determine if the proportion of patients who improved with the new drug is significantly different from a predefined target proportion.
+
+
+## Sample Data
+Here's some sample data for a clinical trial:
+
+Total number of patients: 100
+Number of patients who improved with the new drug: 63
+We will compare the proportion of patients who improved (63 out of 100) to a target proportion (e.g., 0.50) to test if the new drug is effective.
+
+## Step 1: Set Up the Hypotheses
+Before performing the one-proportion test, let's set up the null and alternative hypotheses:
+
+Null Hypothesis (H0): The proportion of patients who improved with the new drug is equal to the target proportion (e.g., 0.50).
+Alternative Hypothesis (Ha): The proportion of patients who improved with the new drug is not equal to the target proportion (e.g., not equal to 0.50).
+
+## Step 2: Perform the One-Proportion Test
+Now, let's perform the one-proportion test using the prop.test function in R.
+
+
+
+
+# Define the sample size
+n <- 100
+
+# Define the number of patients who improved
+x <- 63
+
+# Define the target proportion
+p_target <- 0.50
+
+# Perform the one-proportion test
+prop_test_result <- prop.test(x, n, p_target)
+
+```
+
+## Step 3: Interpret the Results
+Let's interpret the results of the one-proportion test.
+
+
+# Print the one-proportion test results
+prop_test_result
+```
+
+## Step 4: Interpretation
+The null hypothesis (H0) assumes that the proportion of patients who improved with the new drug is equal to the target proportion (0.50).
+
+The alternative hypothesis (Ha) suggests that the proportion of patients who improved with the new drug is not equal to the target proportion (not equal to 0.50).
+
+Since the p-value is less than 0.05, we reject the null hypothesis.
+There is a statistically significant difference in the proportion of patients who improved with the new drug compared to the target proportion.
+
+
+# Two Proportion Test example
+
+In this example, we'll compare the proportions of patients who experienced side effects after taking two different medications. We want to determine if there is a significant difference in the proportion of patients experiencing side effects between the two medications.
+
+## Sample Data
+Here's some sample data for the two medications:
+
+Medication A: 80 out of 200 patients experienced side effects.
+Medication B: 60 out of 200 patients experienced side effects.
+
+## Step 1: Define the Data
+We start by defining the data:
+
+
+# Define the data
+success_a <- 80   # Number of patients with side effects for Medication A
+n_a <- 200         # Total number of patients for Medication A
+
+success_b <- 60   # Number of patients with side effects for Medication B
+n_b <- 200         # Total number of patients for Medication B
+```
+## Step 2: Perform the Two-Proportion Test
+Next, we'll perform a two-proportion test using the prop.test function:
+
+
+# Perform the two-proportion test
+prop_test_result <- prop.test(c(success_a, success_b), c(n_a, n_b))
+```
+
+## Step 3: Interpret the Results
+Now, let's interpret the results of the two-proportion test.
+
+
+
+# Print the two-proportion test results
+prop_test_result
+
+```
+
+## Step 4: Interpretation
+
+The prop.test function tests whether the proportions of patients experiencing side effects for Medication A and Medication B are significantly different.
+
+Since the p-value is less than 0.05, we reject the null hypothesis.
+There is a statistically significant difference in the proportions of patients with side effects between Medication A and Medication B.
+
+# Chi Square Test example
+
+We'll examine whether there's an association between two categorical variables: the type of pain reliever taken (e.g., Drug A, Drug B, or Drug C) and the occurrence of side effects (Yes or No). We want to determine if there's a significant relationship between the choice of pain reliever and the occurrence of side effects.
+
+
+## Sample Data
+Here's some sample data representing the number of patients who experienced side effects (Yes or No) for each type of pain reliever:
+
+
+# Sample data
+data <- data.frame(
+  PainReliever = c("A", "B", "C", "A", "B", "C"),
+  SideEffects = c("Yes", "Yes", "No", "No", "Yes", "No")
+)
+```
+
+## Step 1: Create a Contingency Table
+First, we need to create a contingency table to summarize the data. This table will show the frequency of patients in each combination of pain reliever and side effects.
+
+
+# Create a contingency table
+contingency_table <- table(data$PainReliever, data$SideEffects)
+```
+
+## Step 2: Perform Chi-Square Test
+Now, let's perform the Chi-Square test of independence to determine if there's a significant association between the choice of pain reliever and the occurrence of side effects.
+
+
+# Perform Chi-Square test
+chi_square_result <- chisq.test(contingency_table)
+```
+
+## Step 3: Interpret the Results
+Let's interpret the results of the Chi-Square test.
+
+
+# Print Chi-Square test results
+chi_square_result
+```
+
+The output will include several values, but the key ones for our interpretation are:
+
+X-squared: The Chi-Square statistic measures the association between the two categorical variables.
+
+p-value: The p-value tells us whether this association is statistically significant. A small p-value (typically < 0.05) indicates statistical significance.
+
+## Step 4: Interpretation
+In our example:
+
+The Chi-Square statistic measures the strength and direction of the association between the choice of pain reliever and the occurrence of side effects.
+
+The p-value associated with the Chi-Square statistic tells us whether this association is statistically significant. Since the p-value is greater than or equal to 0.05, we fail to reject the null hypothesis.
+There is no statistically significant association between the choice of pain reliever and the occurrence of side effects.
+
